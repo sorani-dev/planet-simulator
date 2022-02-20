@@ -4,6 +4,9 @@ import math
 
 import pygame
 
+# Init pygame
+pygame.init()
+
 # Game window dimensions
 WIDTH, HEIGHT = 800, 800
 
@@ -17,6 +20,9 @@ YELLOW = (255, 255, 0,)
 BLUE = (100, 149, 237,)
 RED = (188, 39, 50,)
 DARK_GREY = (80, 78, 81,)
+
+# Fonts
+FONT = pygame.font.SysFont("comicsans", 16)
 
 
 class Planet(object):
@@ -81,6 +87,13 @@ class Planet(object):
 
         # Draw the Planet
         pygame.draw.circle(win, self.color, (x, y), self.radius)
+
+        # Draw distance to sun
+        if not self.sun:
+            distance_text = FONT.render(f"{round(self.distance_to_sun/1000, 1)}km", False, self.color)
+            # Draw text on screen
+            WIN.blit(distance_text, (x - distance_text.get_width() / 2,
+                     y - distance_text.get_height() / 2))
 
     def attraction(self, other: Planet) -> tuple[float, float]:
         """Force of attraction from a Planet to a Planet
