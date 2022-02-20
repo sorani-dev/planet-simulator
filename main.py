@@ -52,7 +52,7 @@ class Planet(object):
         self.distance_to_sun = 0
 
         # Keep track of all the points this planet has travelled along
-        self.orbit: list[float] = []
+        self.orbit: list[set[float, float]] = []
 
         # Velocity
         self.x_velocity = 0
@@ -67,6 +67,18 @@ class Planet(object):
         # Get the center of the screen
         x = self.x * self.SCALE + WIDTH / 2
         y = self.y * self.SCALE + WIDTH / 2
+
+        # Draw the Planet orbit
+        if len(self.orbit) > 2:
+            updated_points = []
+            for point in self.orbit:
+                x, y = point
+                x = x * self.SCALE + WIDTH / 2
+                y = y * self.SCALE + WIDTH / 2
+                updated_points.append((x, y))
+            # Draw the updated points as a line
+            pygame.draw.lines(WIN, self.color, False, updated_points, 2)
+
         # Draw the Planet
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
