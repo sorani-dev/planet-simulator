@@ -2,7 +2,7 @@ import pygame
 import math
 
 # Game window dimensions
-WIDTH, HEIGHT = 750, 750
+WIDTH, HEIGHT = 800, 800
 
 # Set pygame defaults
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -10,6 +10,10 @@ pygame.display.set_caption("Planet Simulation")
 
 # Colors
 WHITE = (255, 255, 255,)
+YELLOW = (255, 255, 0,)
+BLUE = (100, 149, 237,)
+RED = (188, 39, 50,)
+DARK_GREY = (80, 78, 81,)
 
 
 class Planet(object):
@@ -23,7 +27,7 @@ class Planet(object):
     # Time to represent in the simulation (how much time has passed since last update)
     TIMESTEP = 3600 * 24  # One day
 
-    def __init__(self, x: float, y: float, radius: float, color: set[int, int, int], mass: float) -> None:
+    def __init__(self, x: float, y: float, radius: int, color: set[int, int, int], mass: float) -> None:
         """Initialize
 
         Args:
@@ -71,6 +75,24 @@ def main():
     # For screen refresh
     clock = pygame.time.Clock()
 
+    # The Sun
+    sun = Planet(0, 0, 30, YELLOW, 1.98892 * 10**30)
+    sun.sun = True
+
+    # The Earth
+    earth = Planet(-1 * Planet.AU, 0, 16, BLUE, 5.9742 * 10**24)
+
+    # Mars
+    mars = Planet(-1.524 * Planet.AU, 0, 12, RED, 6.39 * 10**23)
+
+    # Mercury
+    mercury = Planet(0.387*Planet.AU, 0, 8, DARK_GREY, 3.30 * 10**23)
+
+    # Venus
+    venus = Planet(0.723 * Planet.AU, 0, 14, WHITE, 4.8685 * 10**24)
+    # Planet List
+    planets = [sun, earth, mars, mercury, venus]
+
     while run:
         # Framerate refresh
         clock.tick(60)
@@ -78,13 +100,17 @@ def main():
         # # Draw on screen
         # WIN.fill(WHITE)
 
-        # # Update display
-        # pygame.display.update()
-
         # Manage events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+
+        # Draw Planets
+        for planet in planets:
+            planet.draw(WIN)
+
+        # Update display
+        pygame.display.update()
 
     pygame.quit()
 
